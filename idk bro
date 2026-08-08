@@ -1,0 +1,402 @@
+1. Shopping Cart
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int X = sc.nextInt();
+        int Y = sc.nextInt();
+        int Z = sc.nextInt();
+        int fours = Z / 4;
+        int rem = Z % 4;
+        int cost = fours * Y;
+        if (rem == 1 || rem == 2) cost += X;
+        else if (rem == 3) cost += Math.min(Y, 2 * X);
+        System.out.println(cost);
+    }
+}
+
+2. Harmonic Pattern
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String s = sc.nextLine().trim();
+        int n = s.length(), maxLen = 0;
+        for (int i = 0; i < n; i++) {
+            int pos = i, blockLen = 2, total = 0;
+            while (pos + blockLen <= n) {
+                boolean match = true;
+                for (int j = 0; j < blockLen; j++) {
+                    if (s.charAt(pos + j) != (char) ('a' + j)) { match = false; break; }
+                }
+                if (!match) break;
+                total += blockLen;
+                pos += blockLen;
+                blockLen++;
+            }
+            maxLen = Math.max(maxLen, total);
+        }
+        System.out.println(maxLen);
+    }
+}
+
+
+3. River Current
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] c = new int[n];
+        for (int i = 0; i < n; i++) c[i] = sc.nextInt();
+
+        int[] left = new int[n];
+        int last = 0;
+        for (int i = 0; i < n; i++) { left[i] = last; if (c[i] != 0) last = c[i]; }
+
+        int[] right = new int[n];
+        last = 0;
+        for (int i = n - 1; i >= 0; i--) { right[i] = last; if (c[i] != 0) last = c[i]; }
+
+        int[] res = new int[n];
+        for (int i = 0; i < n; i++) {
+            if (c[i] != 0) res[i] = c[i];
+            else {
+                int l = left[i], r = right[i];
+                if (l != 0 && r != 0) res[i] = (Math.abs(l) >= Math.abs(r)) ? l : r;
+                else res[i] = (l != 0) ? l : r;
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++) { sb.append(res[i]); if (i < n - 1) sb.append(" "); }
+        System.out.println(sb.toString());
+    }
+}
+
+
+
+4. exponential series
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int a1 = sc.nextInt();
+        int r = sc.nextInt();
+        int z = sc.nextInt();
+        List<Integer> series = new ArrayList<>();
+        long term = a1;
+        while (term <= z) {
+            series.add((int) term);
+            term = term * r;
+        }
+        StringBuilder sb = new StringBuilder("{");
+        for (int i = 0; i < series.size(); i++) {
+            sb.append(series.get(i));
+            if (i < series.size() - 1) sb.append(", ");
+        }
+        sb.append("}");
+        System.out.println(sb.toString());
+    }
+}
+
+Index sort
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) a[i] = sc.nextInt();
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            if (a[i] == i + 1) count++;   // position i+1 (1-based) should hold value i+1
+        }
+        System.out.println(count);
+    }
+}
+
+Frequency sync
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();
+        }
+        String s = sc.next();   // lowercase string, no spaces
+        // Frequency of each number in the array
+        Map<Integer, Integer> numFreq = new HashMap<>();
+        for (int x : a) {
+            numFreq.put(x, numFreq.getOrDefault(x, 0) + 1);
+        }
+        // Frequency of each character in the string
+        Map<Character, Integer> charFreq = new HashMap<>();
+        for (char ch : s.toCharArray()) {
+            charFreq.put(ch, charFreq.getOrDefault(ch, 0) + 1);
+        }
+        // Count matching (character, number) pairs
+        int count = 0;
+        for (int cf : charFreq.values()) {
+            for (int nf : numFreq.values()) {
+                if (cf == nf) {
+                    count++;
+                }
+            }
+        }
+        System.out.println(count);
+    }
+}
+
+Consonant vowel merge
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String s = sc.next();
+
+        StringBuilder consonants = new StringBuilder();
+        StringBuilder vowels = new StringBuilder();
+        for (char ch : s.toCharArray()) {
+            if (isVowel(ch)) {
+                vowels.append(ch);
+            } else {
+                consonants.append(ch);
+            }
+        }
+        char[] result = new char[s.length()];
+        int ci = 0;
+        int vi = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (i % 2 == 0) {
+                result[i] = consonants.charAt(ci++);
+            } else {
+                result[i] = vowels.charAt(vi++);
+            }
+        }
+        System.out.println(new String(result));
+    }
+    static boolean isVowel(char ch) {
+        return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+    }
+}
+Count surrounded digits
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String s = sc.next();
+        int n = s.length();
+        int count = 0;
+        int i = 0;
+        while (i < n) {
+            if (Character.isDigit(s.charAt(i))) {
+                int start = i;
+                while (i < n && Character.isDigit(s.charAt(i))) {
+                    i++;                       // extend over the whole digit run
+                }
+                int end = i - 1;               // run is s[start..end]
+                boolean leftOk  = (start - 1 >= 0) && Character.isLetter(s.charAt(start - 1));
+                boolean rightOk = (end + 1 < n)  && Character.isLetter(s.charAt(end + 1));
+
+                if (leftOk && rightOk) {
+                    count++;
+                }
+            } else {
+                i++;
+            }
+        }
+        System.out.println(count);
+    }
+}
+
+Seat Allocation
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();
+        }
+        boolean[] occupied = new boolean[n + 1];   // seats 1..n
+        int[] result = new int[n];                 // result[i] = seat of student i
+        for (int i = 0; i < n; i++) {
+            int seat = a[i];
+            while (occupied[seat]) {               // seat taken -> search circularly
+                seat++;
+                if (seat > n) {
+                    seat = 1;                      // wrap around to seat 1
+                }
+            }
+            occupied[seat] = true;
+            result[i] = seat;
+        }
+        StringBuilder sb = new StringBuilder("{");
+        for (int i = 0; i < n; i++) {
+            sb.append(result[i]);
+            if (i < n - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append("}");
+        System.out.println(sb.toString());
+    }
+}
+
+Reduced till zero/andys problem
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int x = sc.nextInt();
+        int y = sc.nextInt();
+        while (y != 0) {
+            if (x > y) {                 // step 1: make X the smaller
+                int temp = x;
+                x = y;
+                y = temp;
+            }
+            y = y - x;                   // step 2: subtract
+        }
+        System.out.println(x);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+String swap
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String s = sc.next();
+        int m = sc.nextInt();
+        int[] a = new int[m];
+        for (int i = 0; i < m; i++) {
+            a[i] = sc.nextInt();
+        }
+        int n = s.length();
+        char[] arr = s.toCharArray();
+        for (int i = 0; i < m; i++) {
+            if (a[i] == 1) {
+                // Operation 1: swap first and last characters
+                char temp = arr[0];
+                arr[0] = arr[n - 1];
+                arr[n - 1] = temp;
+            } else if (a[i] == 2) {
+                // Operation 2: swap first N/2 with last N/2
+                int half = n / 2;
+                char[] newArr = new char[n];
+                for (int j = 0; j < half; j++) {
+                    newArr[j] = arr[half + j];        // last half moves to front
+                }
+                for (int j = 0; j < half; j++) {
+                    newArr[half + j] = arr[j];         // first half moves to back
+                }
+                arr = newArr;
+            }
+        }
+        System.out.println(new String(arr));
+    }
+}
+
+Knight Ranking Parade
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();
+        }
+
+        // A sorted copy tells us the correct final order
+        int[] sorted = a.clone();
+        Arrays.sort(sorted);
+        // Remember the correct index for each value
+        HashMap<Integer, Integer> pos = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            pos.put(sorted[i], i);
+        }
+        int swaps = 0;
+        for (int i = 0; i < n; i++) {
+            // Keep swapping until position i holds the correct value
+            while (a[i] != sorted[i]) {
+                int correctIndex = pos.get(a[i]);   // where a[i] really belongs
+                int temp = a[i];                    // swap a[i] with a[correctIndex]
+                a[i] = a[correctIndex];
+                a[correctIndex] = temp;
+                swaps++;
+            }
+        }
+        System.out.println(swaps);
+    }
+}
+
+Minimum length
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String s = sc.next();
+        int n = s.length();
+        int[] first = new int[26];
+        int[] last = new int[26];
+        Arrays.fill(first, -1);
+        for (int i = 0; i < n; i++) {
+            int c = s.charAt(i) - 'a';
+            if (first[c] == -1) {
+                first[c] = i;      // record first occurrence
+            }
+            last[c] = i;           // keep updating last occurrence
+        }
+        int ans = Integer.MAX_VALUE;
+        for (int c = 0; c < 26; c++) {
+            if (first[c] != -1) {
+                int span = last[c] - first[c] + 1;
+                ans = Math.min(ans, span);
+            }
+        }
+        System.out.println(ans);
+    }
+}
+
+Count subsets 
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();
+        }
+        Arrays.sort(a);   // ascending order
+        int ans = 1;
+        for (int i = 1; i <= n; i++) {
+            int value = a[i - 1];                    // i-th smallest (1-based)
+            int need = (i + value - 1) / value;      // ceil(i / value)
+            ans = Math.max(ans, need);
+        }
+        System.out.println(ans);
+    }
+}
